@@ -41,7 +41,7 @@ class Images:
                 'year_end'         : year_end
                 }
             items = []
-            for page in range(1, 101):
+            for page in itertools.count(1):
                 time.sleep(1)
                 params.update({'page':page})
                 r = s.get(url, params=params)
@@ -117,7 +117,7 @@ class Images:
         with requests.Session() as s:
             url = f' https://images-api.nasa.gov/album/{album_name}'
             items = []
-            for page in range(1, 101):
+            for page in itertools.count(1):
                 time.sleep(1)
                 r = s.get(url, params={'page':page,'page_size':50})
                 
@@ -132,7 +132,6 @@ class Images:
                     data, = it.get('data')
                     href  = it.get('href')
                     data.update({'href': href})
-                    data.pop('album')
                     items.append(data)
                     
                 print(f'Extracting items @ Page.{page:03d}... {len(items)/total_hits:7.2%}')
