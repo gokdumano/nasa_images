@@ -47,7 +47,7 @@ class Images:
                 r = s.get(url, params=params)
                 
                 try   : r.raise_for_status()
-                except: return r.json().get('reason')
+                except: print(r.json().get('reason')); return items, False;
 
                 collection  = r.json().get('collection')
                 total_hits  = collection.get('metadata').get('total_hits')
@@ -62,7 +62,7 @@ class Images:
                 print(f'Extracting items @ Page.{page:03d}... {len(items)/total_hits:7.2%}')
                 if len(item) < page_size: break
                     
-            return items
+            return items, True
         
     @staticmethod
     def Asset(
@@ -122,7 +122,7 @@ class Images:
                 r = s.get(url, params={'page':page,'page_size':50})
                 
                 try   : r.raise_for_status()
-                except: return r.json().get('reason')
+                except: print(r.json().get('reason')); return items, False;
 
                 collection  = r.json().get('collection')
                 total_hits  = collection.get('metadata').get('total_hits')
@@ -138,7 +138,7 @@ class Images:
                 print(f'Extracting items @ Page.{page:03d}... {len(items)/total_hits:7.2%}')
                 if len(item) < 50: break
                     
-            return items
+            return items, True
 
 if __name__ == '__main__':
     search   = Images.Search('Uranus')
@@ -146,6 +146,4 @@ if __name__ == '__main__':
     metadata = Images.Metadata('PIA01535')
     captions = Images.Captions('PIA01535')
     album    = Images.Album('Mars')
-
-
 
